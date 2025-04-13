@@ -1,11 +1,10 @@
 package com.vuhoang.hueplan.controller;
 
 import com.vuhoang.hueplan.entity.UserEntity;
-import com.vuhoang.hueplan.service.UserService;
+import com.vuhoang.hueplan.service.impl.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
