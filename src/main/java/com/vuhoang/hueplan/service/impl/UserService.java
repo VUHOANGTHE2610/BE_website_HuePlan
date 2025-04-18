@@ -44,7 +44,6 @@ public class UserService implements I_User {
     }
     @Override
     public UserEntity getUser(int userID) {
-
         return userRepository.getReferenceById(userID);
     }
 
@@ -68,7 +67,7 @@ public class UserService implements I_User {
                     existingUser.setUser_Password(user.getUser_Password());
                     return userRepository.save(existingUser).getUser_ID(); // Lưu user đã cập nhật
                 })
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + user.getUser_ID()));
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy User: " + user.getUser_ID()));
     }
 
     @Override

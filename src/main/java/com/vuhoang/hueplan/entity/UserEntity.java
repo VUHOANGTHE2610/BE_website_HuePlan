@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -32,8 +33,16 @@ public class UserEntity implements UserDetails {
     @Column(name = "user_Email")
     private String userEmail;
 
-    @Column(name = "role")  // (client - Admin - cooperator)
+    @Column(name = "role")  // (client - Admin - cooperator - business)
     private String role;
+
+
+    // các mối quan hệ
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BusinessEntity> business;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private TimeLineEntity timeLine;
+
 
     @Override
     @Transient  // Không ánh xạ phương thức này vào database
