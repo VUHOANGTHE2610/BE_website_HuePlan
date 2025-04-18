@@ -1,4 +1,4 @@
-package com.vuhoang.hueplan.interfaces;
+package com.vuhoang.hueplan.service;
 
 import com.vuhoang.hueplan.entity.UserEntity;
 

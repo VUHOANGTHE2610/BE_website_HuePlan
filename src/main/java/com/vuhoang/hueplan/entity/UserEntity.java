@@ -1,10 +1,25 @@
 package com.vuhoang.hueplan.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserEntity implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int user_ID;
@@ -16,71 +31,58 @@ public class UserEntity {
     private String user_Password;
 
     @Column(name = "user_Email")
-    private String user_Email;
+    private String userEmail;
 
-    @Column(name = "role")  // (client - Admin - cooperator)
+    @Column(name = "role")  // (client - Admin - cooperator - business)
     private String role;
 
-    public UserEntity(){
-        super();
-    }
 
-    public UserEntity(int user_ID, String user_Name, String user_Password, String user_Email, String role) {
-        this.user_ID = user_ID;
-        this.user_Name = user_Name;
-        this.user_Password = user_Password;
-        this.user_Email = user_Email;
-        this.role = role;
-    }
+    // các mối quan hệ
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BusinessEntity> business;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private TimeLineEntity timeLine;
 
-    public int getUser_ID() {
-        return user_ID;
-    }
 
-    public void setUser_ID(int user_ID) {
-        this.user_ID = user_ID;
-    }
-
-    public String getUser_Name() {
-        return user_Name;
-    }
-
-    public void setUser_Name(String user_Name) {
-        this.user_Name = user_Name;
-    }
-
-    public String getUser_Password() {
-        return user_Password;
-    }
-
-    public void setUser_Password(String user_Password) {
-        this.user_Password = user_Password;
-    }
-
-    public String getUser_Email() {
-        return user_Email;
-    }
-
-    public void setUser_Email(String user_Email) {
-        this.user_Email = user_Email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
+    @Override
+    @Transient  // Không ánh xạ phương thức này vào database
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     @Override
-    public String toString() {
-        return "UserEntity{" +
-                "user_ID=" + user_ID +
-                ", user_Name='" + user_Name + '\'' +
-                ", user_Password='" + user_Password + '\'' +
-                ", user_Email='" + user_Email + '\'' +
-                ", role='" + role + '\'' +
-                '}';
+    @Transient  // Không ánh xạ phương thức này vào database
+    public String getPassword() {
+        return user_Password;
+    }
+
+    @Override
+    @Transient  // Không ánh xạ phương thức này vào database
+    public String getUsername() {
+        return userEmail;  // Sử dụng email làm username
+    }
+
+    @Override
+    @Transient
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isEnabled() {
+        return true;
     }
 }
