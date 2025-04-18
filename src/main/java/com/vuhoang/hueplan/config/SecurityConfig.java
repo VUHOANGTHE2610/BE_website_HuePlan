@@ -47,8 +47,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("Admin")
-                .requestMatchers("/api/cooperator/**").hasRole("cooperator")
+                .requestMatchers("/api/cooperator/**").hasRole("Cooperator")
                 .requestMatchers("/api/client/**").hasRole("Client")
+                .requestMatchers("/api/business/**").hasRole("Business")
+                .requestMatchers("/api/users/**").hasAnyRole("Admin","Cooperator")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

@@ -32,7 +32,7 @@ public class UserService implements I_User {
         user.setUserEmail(userDTO.getUserEmail());
         user.setUser_Password(passwordEncoder.encode(userDTO.getUserPassword())); // Mã hóa mật khẩu
         user.setUser_Name(userDTO.getUserName());
-        user.setRole(userDTO.getRole() != null ? userDTO.getRole() : "client"); // Mặc định role là client
+        user.setRole(userDTO.getRole() != null ? userDTO.getRole() : "Client"); // Mặc định role là client
 
         // Lưu vào database
         return userRepository.save(user);
@@ -44,6 +44,7 @@ public class UserService implements I_User {
     }
     @Override
     public UserEntity getUser(int userID) {
+
         return userRepository.getReferenceById(userID);
     }
 
